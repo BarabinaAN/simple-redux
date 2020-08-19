@@ -26,4 +26,5 @@ const updateCounter = () => {
   .innerHTML = store.getState()
 }
 
+updateCounter()
 store.subscribe(updateCounter)
