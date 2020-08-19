@@ -1,17 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { createStore, bindActionCreators } from 'redux'
+import reducer from './reducer'
+import * as actions from './actions'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+let store = createStore(reducer)
+const { dispatch } = store
+const { inc, dec, rnd } = bindActionCreators(actions, dispatch)
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+document
+  .getElementById('inc')
+  .addEventListener('click', inc)
+
+document
+  .getElementById('dec')
+  .addEventListener('click', dec)
+
+document
+  .getElementById('rnd')
+  .addEventListener('click', () => {
+    const rndValue = Math.floor(Math.random()*10)
+    rnd(rndValue)
+  })
+
+const updateCounter = () => {
+  document.getElementById('counter')
+  .innerHTML = store.getState()
+}
+
+store.subscribe(updateCounter)
